@@ -16,6 +16,8 @@ def isCorrectRest(coordinates):
     
     return False 
 
+
+
 def isCollisionRect(rectangles):
     if not isinstance(rectangles, list) or len(rectangles) != 2:
         raise ValueError("Функция ожидает список из двух прямоугольников")
@@ -35,3 +37,42 @@ def isCollisionRect(rectangles):
     intersect_y = not (y2 <= y3 or y4 <= y1)
     
     return intersect_x and intersect_y
+
+
+def intersectionAreaRect(rect1,rect2):
+
+    if not isCorrectRest(rect1):
+        raise ValueError("Первый прямоугольник некоректный")
+    
+    if not isCorrectRest(rect2):
+        raise ValueError("Второй прямоугольник некоректный")
+    
+    (x1,y1), (x2,y2) = rect1
+
+    (x3,y3), (x4,y4) = rect2
+
+    # Находим координаты пересечения по оси X
+    # Пересечение по X: максимальная из левых границ и минимальная из правых границ
+    left_x = max(x1, x3)
+    right_x = min(x2, x4)
+    
+    # Если пересечения по X нет (левая граница пересечения >= правой границы)
+    if left_x >= right_x:
+        return 0.0
+    
+    # Находим координаты пересечения по оси Y
+    # Пересечение по Y: максимальная из нижних границ и минимальная из верхних границ
+    bottom_y = max(y1, y3)
+    top_y = min(y2, y4)
+    
+    # Если пересечения по Y нет
+    if bottom_y >= top_y:
+        return 0.0
+    
+    width = right_x - left_x
+    height = top_y - bottom_y
+
+    #площадь
+    area = width * height
+
+    return float(area)
