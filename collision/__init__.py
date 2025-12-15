@@ -118,3 +118,34 @@ def intersectionAreaMultiRect(rectangles):
         return area(peresechenie) 
     
     
+    n = len(rectangles)
+    total_area = 0.0
+    
+    # Генерируем все возможные подмножества прямоугольников (от 2 до n)
+    from itertools import combinations
+    
+    # Используем принцип включения-исключения
+    sign = 1  # Знак для включения-исключения: + для четных, - для нечетных
+    for k in range(2, n + 1):
+        sign = 1 if k % 2 == 0 else -1
+        
+        # Генерируем все комбинации из k прямоугольников
+        for combo in combinations(range(n), k):
+            # Начинаем с пересечения первого прямоугольника в комбинации
+            current_intersection = rectangles[combo[0]]
+            
+            # Находим пересечение всех прямоугольников в комбинации
+            for idx in combo[1:]:
+                current_intersection = peresech(current_intersection, rectangles[idx])
+                if current_intersection is None:
+                    # Если на каком-то шаге пересечение стало None, 
+                    # значит у этой комбинации нет общего пересечения
+                    break
+            
+            if current_intersection is not None:
+                # Добавляем/вычитаем площадь этого пересечения
+                total_area += sign * area(current_intersection)
+    
+    return total_area
+
+    
