@@ -76,3 +76,45 @@ def intersectionAreaRect(rect1,rect2):
     area = width * height
 
     return float(area)
+
+
+def peresech(rect1,rect2):
+
+    (x1,y1),(x2,y2) = rect1
+    (x3,y3),(x4,y4) = rect2
+
+
+    left_x = max(x1, x3)
+    right_x = min(x2, x4)
+    bottom_y = max(y1, y3)
+    top_y = min(y2, y4)
+
+    if left_x >=right_x or bottom_y >=top_y:
+        return None
+
+    return [(left_x, bottom_y), (right_x, top_y)]
+
+def area(rect):
+
+    (x1, y1), (x2, y2) = rect
+
+    return (x2 - x1) * (y2 - y1)
+
+
+
+def intersectionAreaMultiRect(rectangles):
+    if not isinstance(rectangles,list):
+        raise ValueError("Ожидается список списков")
+    
+    if len(rectangles) < 2:
+        ValueError("надо 2 прямоугольника")
+
+    for i,rect in enumerate(rectangles,1):
+        if not isCorrectRest(rect):
+            raise ValueError(f"{i}прямоугольник не коректный")
+        
+    if len(rectangles) == 2:
+        peresechenie =peresech(rectangles[0],rectangles[1])
+        return area(peresechenie) 
+    
+    
